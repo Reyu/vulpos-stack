@@ -1,7 +1,7 @@
 # modified version of https://gist.github.com/kwilczynski/ab451a357fa59b9377b7d946e557ee79
 SHELL := /bin/bash
 
-TARGET := rattlesnakeos-stack
+TARGET := vulpos-stack
 VERSION := $(shell cat VERSION)
 
 OS := darwin linux windows
@@ -107,11 +107,11 @@ env:
 	@go env
 
 build:
-	go build -race -ldflags "-X github.com/dan-v/rattlesnakeos-stack/cli.version=$(VERSION)" -v -o "$(TARGET)" .
+	go build -race -ldflags "-X github.com/reyu/vulpos-stack/cli.version=$(VERSION)" -v -o "$(TARGET)" .
 
 build-all:
 	mkdir -v -p $(CURDIR)/artifacts/$(VERSION)
-	gox -verbose -ldflags "-X github.com/dan-v/rattlesnakeos-stack/cli.version=$(VERSION)" \
+	gox -verbose -ldflags "-X github.com/reyu/vulpos-stack/cli.version=$(VERSION)" \
 	    -os "$(OS)" -arch "$(ARCH)" \
 	    -output "$(CURDIR)/artifacts/$(VERSION)/{{.OS}}/$(TARGET)" .
 	cp -v -f \
@@ -133,6 +133,6 @@ version:
 
 zip: all
 	mkdir -p artifacts/zips
-	pushd artifacts/$(VERSION)/darwin && zip -r ../../../artifacts/zips/rattlesnakeos-stack-osx-${VERSION}.zip $(TARGET) && popd
-	pushd artifacts/$(VERSION)/windows && zip -r ../../../artifacts/zips/rattlesnakeos-stack-windows-${VERSION}.zip $(TARGET).exe && popd
-	pushd artifacts/$(VERSION)/linux && zip -r ../../../artifacts/zips/rattlesnakeos-stack-linux-${VERSION}.zip $(TARGET) && popd
+	pushd artifacts/$(VERSION)/darwin && zip -r ../../../artifacts/zips/vulpos-stack-osx-${VERSION}.zip $(TARGET) && popd
+	pushd artifacts/$(VERSION)/windows && zip -r ../../../artifacts/zips/vulpos-stack-windows-${VERSION}.zip $(TARGET).exe && popd
+	pushd artifacts/$(VERSION)/linux && zip -r ../../../artifacts/zips/vulpos-stack-linux-${VERSION}.zip $(TARGET) && popd

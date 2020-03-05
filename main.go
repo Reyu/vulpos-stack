@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dan-v/rattlesnakeos-stack/cli"
+	"github.com/reyu/vulpos-stack/cli"
 )
 
 func main() {

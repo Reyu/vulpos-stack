@@ -391,7 +391,7 @@ resource "aws_lambda_function" "rattlesnake_lambda_build" {
 ###################
 resource "aws_cloudwatch_event_rule" "build_schedule" {
     name = "${var.name}-build-schedule"
-    description = "RattlesnakeOS build"
+    description = "VulpOS build"
     schedule_expression = "<% .Config.Schedule %>"
 }
 

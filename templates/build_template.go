@@ -112,7 +112,7 @@ BUILD_DATE=$(date +%Y.%m.%d.%H)
 BUILD_TIMESTAMP=$(date +%s)
 BUILD_DIR="$HOME/rattlesnake-os"
 KEYS_DIR="${BUILD_DIR}/keys"
-CERTIFICATE_SUBJECT='/CN=RattlesnakeOS'
+CERTIFICATE_SUBJECT='/CN=VulpOS'
 OFFICIAL_FDROID_KEY="43238d512c1e5eb2d6569f4a3afbf5523418b82e0a3ed1552770abb9a9c9ccab"
 MARLIN_KERNEL_SOURCE_DIR="${HOME}/kernel/google/marlin"
 BUILD_REASON=""
@@ -121,7 +121,7 @@ BUILD_REASON=""
 ANDROID_SDK_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
 MANIFEST_URL="https://android.googlesource.com/platform/manifest"
 CHROME_URL_LATEST="https://omahaproxy.appspot.com/all.json"
-STACK_URL_LATEST="https://api.github.com/repos/dan-v/rattlesnakeos-stack/releases/latest"
+STACK_URL_LATEST="https://api.github.com/repos/reyu/vulpos-stack/releases/latest"
 FDROID_CLIENT_URL_LATEST="https://gitlab.com/api/v4/projects/36189/repository/tags"
 FDROID_PRIV_EXT_URL_LATEST="https://gitlab.com/api/v4/projects/1481578/repository/tags"
 KERNEL_SOURCE_URL="https://android.googlesource.com/kernel/msm"
@@ -141,10 +141,10 @@ get_latest_versions() {
   # check if running latest stack
   LATEST_STACK_VERSION=$(curl --fail -s "$STACK_URL_LATEST" | jq -r '.name')
   if [ -z "$LATEST_STACK_VERSION" ]; then
-    aws_notify_simple "ERROR: Unable to get latest rattlesnakeos-stack version details. Stopping build."
+    aws_notify_simple "ERROR: Unable to get latest vulpos-stack version details. Stopping build."
     exit 1
   elif [ "$LATEST_STACK_VERSION" == "$STACK_VERSION" ]; then
-    echo "Running the latest rattlesnakeos-stack version $LATEST_STACK_VERSION"
+    echo "Running the latest vulpos-stack version $LATEST_STACK_VERSION"
   else
     STACK_UPDATE_MESSAGE="WARNING: you should upgrade to the latest version: ${LATEST_STACK_VERSION}"
   fi
@@ -193,7 +193,7 @@ check_for_new_versions() {
   needs_update=false
 
   # check stack version
-  existing_stack_version=$(aws s3 cp "s3://${AWS_RELEASE_BUCKET}/rattlesnakeos-stack/revision" - || true)
+  existing_stack_version=$(aws s3 cp "s3://${AWS_RELEASE_BUCKET}/vulpos-stack/revision" - || true)
   if [ "$existing_stack_version" == "$STACK_VERSION" ]; then
     echo "Stack version ($existing_stack_version) is up to date"
   else
@@ -264,7 +264,7 @@ check_for_new_versions() {
       echo "$message"
       BUILD_REASON="$message"
     else
-      aws_notify "RattlesnakeOS build not required as all components are already up to date."
+      aws_notify "VulpOS build not required as all components are already up to date."
       exit 0
     fi
   fi
@@ -280,7 +280,7 @@ full_run() {
   get_latest_versions
   check_for_new_versions
   initial_key_setup
-  aws_notify "RattlesnakeOS Build STARTED"
+  aws_notify "VulpOS Build STARTED"
   setup_env
   check_chromium
   aosp_repo_init
@@ -302,7 +302,7 @@ full_run() {
   release "${DEVICE}"
   aws_upload
   checkpoint_versions
-  aws_notify "RattlesnakeOS Build SUCCESS"
+  aws_notify "VulpOS Build SUCCESS"
 }
 
 add_chromium() {
@@ -361,7 +361,7 @@ attestation_setup() {
 
   cd $HOME
   echo "cloning and building auditor"
-  git clone https://github.com/RattlesnakeOS/Auditor.git
+  git clone https://github.com/VulpOS/Auditor.git
   cd Auditor
   sed -i "s/DOMAIN_NAME/${ATTESTATION_DOMAIN}/g" app/src/main/res/values/strings.xml
   sed -i "s/attestation.app/${ATTESTATION_DOMAIN}/" app/src/main/java/app/attestation/auditor/RemoteVerifyJob.java
@@ -383,7 +383,7 @@ attestation_setup() {
 
   cd $HOME
   echo "cloning attestationserver"
-  git clone https://github.com/RattlesnakeOS/AttestationServer.git
+  git clone https://github.com/VulpOS/AttestationServer.git
   cd AttestationServer
   cat <<EOF > .ebextensions/.config
 option_settings:
@@ -659,10 +659,10 @@ aosp_repo_modifications() {
     temporary_apifinder_fix='<project path="tools/apifinder" name="platform/tools/apifinder" revision="refs/tags/android-mainline-10.0.0_r9" />'
   fi
 
-  cat <<EOF > ${BUILD_DIR}/.repo/local_manifests/rattlesnakeos.xml
+  cat <<EOF > ${BUILD_DIR}/.repo/local_manifests/vulpos.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-  <remote name="github" fetch="https://github.com/RattlesnakeOS/" revision="${ANDROID_VERSION}" />
+  <remote name="github" fetch="https://github.com/VulpOS/" revision="${ANDROID_VERSION}" />
   <remote name="fdroid" fetch="https://gitlab.com/fdroid/" />
 
   <project path="external/chromium" name="platform_external_chromium" remote="github" />
@@ -1128,7 +1128,7 @@ checkpoint_versions() {
   log_header ${FUNCNAME}
 
   # checkpoint stack version
-  echo "${STACK_VERSION}" | aws s3 cp - "s3://${AWS_RELEASE_BUCKET}/rattlesnakeos-stack/revision"
+  echo "${STACK_VERSION}" | aws s3 cp - "s3://${AWS_RELEASE_BUCKET}/vulpos-stack/revision"
 
   # checkpoint f-droid
   echo "${FDROID_PRIV_EXT_VERSION}" | aws s3 cp - "s3://${AWS_RELEASE_BUCKET}/fdroid-priv/revision"
@@ -1253,7 +1253,7 @@ cleanup() {
   rv=$?
   aws_logging
   if [ $rv -ne 0 ]; then
-    aws_notify "RattlesnakeOS Build FAILED" 1
+    aws_notify "VulpOS Build FAILED" 1
   fi
   if [ "${PREVENT_SHUTDOWN}" = true ]; then
     log "Skipping shutdown"

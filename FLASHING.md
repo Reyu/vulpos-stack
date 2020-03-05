@@ -1,5 +1,5 @@
 ## Initial Flashing Guide
-Below are instructions on how to initially flash your device to run RattlesnakeOS. This is a one time process and future updates will happen through the built in OTA updater. Please note most of this guide is directly copied from [GrapheneOS documentation](https://grapheneos.org/install). 
+Below are instructions on how to initially flash your device to run VulpOS. This is a one time process and future updates will happen through the built in OTA updater. Please note most of this guide is directly copied from [GrapheneOS documentation](https://grapheneos.org/install). 
 
 ## Prerequisites
 You should have at least 2GB of free memory available.
@@ -44,7 +44,7 @@ fastboot flashing unlock
 The command needs to be confirmed on the device.
 
 ## Obtaining factory images
-Extract the factory image you just created for RattlesnakeOS and run the script to flash them. 
+Extract the factory image you just created for VulpOS and run the script to flash them. 
 ```
 tar xvf crosshatch-factory-latest.tar.xz
 cd crosshatch-pq3a.190605.003
@@ -61,11 +61,11 @@ On newer Pixel devices (everything other than the original Pixel), a locked boot
 
 Therefore, the public key needs to be set before locking the bootloader again. First get the generated public key from S3:
 ```
-aws s3 cp s3://<rattlesnakeos-stackname>-keys/crosshatch/avb_pkmd.bin .
+aws s3 cp s3://<vulpos-stackname>-keys/crosshatch/avb_pkmd.bin .
 ```
 Or if you used the `encrypted-keys` option, you will need to download the encrypted key and decrypt it.
 ```
-aws s3 cp s3://<rattlesnakeos-stackname>-keys-encrypted/crosshatch/avb_pkmd.bin.gpg .
+aws s3 cp s3://<vulpos-stackname>-keys-encrypted/crosshatch/avb_pkmd.bin.gpg .
 gpg -d avb_pkmd.bin.gpg > avb_pkmd.bin
 ```
 

@@ -101,13 +101,13 @@ def lambda_handler(event, context):
                                 cheapest_az = az
                         print("{} {}".format(az, price))
     except Exception as e:
-        send_sns_message("RattlesnakeOS Spot Instance FAILED", "There was a problem finding cheapest region for spot instance {}: {}".format(INSTANCE_TYPE, e))
+        send_sns_message("VulpOS Spot Instance FAILED", "There was a problem finding cheapest region for spot instance {}: {}".format(INSTANCE_TYPE, e))
         raise
 
     if float(cheapest_price) > float(SKIP_PRICE):
         message = "Cheapest spot instance {} price ${} in AZ {} is not lower than --skip-price ${}.".format(INSTANCE_TYPE, cheapest_price,
                       cheapest_az, SKIP_PRICE)
-        send_sns_message("RattlesnakeOS Spot Instance SKIPPED", message)
+        send_sns_message("VulpOS Spot Instance SKIPPED", message)
         return message
 
     # AMI to launch with
@@ -178,7 +178,7 @@ runcmd:
     except Exception as e:
         if ENCRYPTED_KEYS == "true":
             message = "Encrypted keys is enabled, so properly configured SSH keys are mandatory. Unable to find an EC2 Key Pair named '{}' in region {}.".format(SSH_KEY_NAME, cheapest_region)
-            send_sns_message("RattlesnakeOS Spot Instance CONFIGURATION ERROR", message)
+            send_sns_message("VulpOS Spot Instance CONFIGURATION ERROR", message)
             return message
         else:
             print("Not including SSH key in spot request as couldn't find a key in region {} with name {}: {}".format(cheapest_region, SSH_KEY_NAME, e))
@@ -190,10 +190,10 @@ runcmd:
         response = client.request_spot_fleet(SpotFleetRequestConfig=spot_fleet_request_config)
         print("Spot request response: {}".format(response))
     except Exception as e:
-        send_sns_message("RattlesnakeOS Spot Instance FAILED", "There was a problem requesting a spot instance {}: {}".format(INSTANCE_TYPE, e))
+        send_sns_message("VulpOS Spot Instance FAILED", "There was a problem requesting a spot instance {}: {}".format(INSTANCE_TYPE, e))
         raise
 
-    subject = "RattlesnakeOS Spot Instance SUCCESS"
+    subject = "VulpOS Spot Instance SUCCESS"
     message = "Successfully requested a spot instance.\n\n Stack Name: {}\n Device: {}\n Force Build: {}\n Instance Type: {}\n Cheapest Region: {}\n Cheapest Hourly Price: ${} ".format(NAME, DEVICE, force_build, INSTANCE_TYPE, cheapest_region, cheapest_price)
     send_sns_message(subject, message)
     return message.replace('\n', ' ')

@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/dan-v/rattlesnakeos-stack/templates"
+	"github.com/reyu/vulpos-stack/templates"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -35,7 +35,7 @@ type terraformClient struct {
 }
 
 func newTerraformClient(config *AWSStack, stdout, stderr io.Writer) (*terraformClient, error) {
-	tempDir, err := NewTempDir("rattlesnakeos-stack")
+	tempDir, err := NewTempDir("vulpos-stack")
 	if err != nil {
 		return nil, err
 	}

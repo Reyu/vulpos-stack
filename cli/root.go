@@ -14,7 +14,7 @@ import (
 var (
 	version                   string
 	cfgFile                   string
-	defaultConfigFileBase     = ".rattlesnakeos"
+	defaultConfigFileBase     = ".vulpos"
 	defaultConfigFileFormat   = "toml"
 	defaultConfigFile         = fmt.Sprintf("%v.%v", defaultConfigFileBase, defaultConfigFileFormat)
 	defaultConfigFileFullPath string
@@ -71,7 +71,7 @@ func init() {
 }
 
 var rootCmd = &cobra.Command{
-	Use: "rattlesnakeos-stack",
+	Use: "vulpos-stack",
 	Short: "A cross platform tool that provisions all of the AWS infrastructure required to build your own privacy " +
 		"focused Android OS on a continuous basis with OTA updates.",
 	Version: version,

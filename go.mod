@@ -1,4 +1,4 @@
-module github.com/dan-v/rattlesnakeos-stack
+module github.com/reyu/vulpos-stack
 
 go 1.12
 

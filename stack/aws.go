@@ -11,7 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/sns"
-	"github.com/dan-v/rattlesnakeos-stack/templates"
+	"github.com/reyu/vulpos-stack/templates"
 	log "github.com/sirupsen/logrus"
 )
 

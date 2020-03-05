@@ -143,7 +143,7 @@ var buildTerminateCmd = &cobra.Command{
 
 var buildListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List in progress RattlesnakeOS builds",
+	Short: "List in progress VulpOS builds",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if viper.GetString("name") == "" && name == "" {
 			return fmt.Errorf("must provide a stack name")

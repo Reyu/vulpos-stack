@@ -20,7 +20,7 @@ func init() {
 
 var configCmd = &cobra.Command{
 	Use:   "config",
-	Short: "Setup config file for rattlesnakeos-stack",
+	Short: "Setup config file for vulpos-stack",
 	Run: func(cmd *cobra.Command, args []string) {
 		color.Cyan(fmt.Sprintln("Device is the device codename (e.g. sailfish). Supported devices:", supportDevicesOutput))
 		validate := func(input string) error {
@@ -50,7 +50,7 @@ var configCmd = &cobra.Command{
 		}
 		viper.Set("device", result)
 
-		defaultName := fmt.Sprintf("rattlesnakeos-%v-%v", result, randomString(10))
+		defaultName := fmt.Sprintf("vulpos-%v-%v", result, randomString(10))
 		if viper.GetString("name") != "" {
 			defaultName = viper.GetString("name")
 		}
@@ -119,7 +119,7 @@ var configCmd = &cobra.Command{
 		}
 		viper.Set("email", result)
 
-		defaultKeypairName := "rattlesnakeos"
+		defaultKeypairName := "vulpos"
 		if viper.GetString("ssh-key") != "" {
 			defaultKeypairName = viper.GetString("ssh-key")
 		}
@@ -145,7 +145,7 @@ var configCmd = &cobra.Command{
 		if err != nil {
 			log.WithError(err).Fatalf("failed to write config file %s", configFileFullPath)
 		}
-		log.Infof("rattlesnakeos-stack config file has been written to %v", configFileFullPath)
+		log.Infof("vulpos-stack config file has been written to %v", configFileFullPath)
 	},
 }
 

@@ -3,9 +3,9 @@ package cli
 import (
 	"fmt"
 
-	"github.com/dan-v/rattlesnakeos-stack/stack"
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
+	"github.com/reyu/vulpos-stack/stack"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,7 +23,7 @@ func init() {
 
 var removeCmd = &cobra.Command{
 	Use:   "remove",
-	Short: "Remove all AWS infrastructure used for building RattlesnakeOS",
+	Short: "Remove all AWS infrastructure used for building VulpOS",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if viper.GetString("name") == "" && name == "" {
 			return fmt.Errorf("must provide a stack name")
